@@ -52,7 +52,7 @@ for site in sites:
 				if network and network.name == 'Twitter':
 					twt = twitter.Api(consumer_key = network.auth->>'key', consumer_secret = network.auth->>'secret', access_token_key = account.auth->>'key', access_token_secret = account.auth->>'secret')
 					post = db_sqla.query(db_post).filter(db_post.site_id == site.id, db_post.tw_id == None, db_post.publish_date <= now ).order_by(db_post.publish_date.asc()).first()
-					short = bitly.shorten('http://google.com/')
+					short = bitly.shorten(post.link)
 					text = post.title + ' ' + short['url']
 					status = twt.PostUpdate(text)
 					post.tw_id = status.id_str
