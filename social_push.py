@@ -42,7 +42,7 @@ access_token = 'd856875d28988706cd42b0347588a91273c70df7'
 bitly = bitly_api.Connection(access_token=access_token)
 
 for site in sites:
-	accounts = db_sqla.query(db_account).filter(db_account.site_id == site.id, is_active == 1)
+	accounts = db_sqla.query(db_account).filter(db_account.site_id == site.id, db_account.is_active == 1)
 	if accounts:
 		for account in accounts:
 			now = datetime.datetime.now()
@@ -50,7 +50,7 @@ for site in sites:
 			if then > account.last:
 				network = db_sqla.query(db_network).filter(db_network.id == account.network_id).one()
 				if network and network.name == 'Twitter':
-					twt = twitter.Api(consumer_key = network.auth->>'key', consumer_secret = network.auth->>'secret', access_token_key = account.auth->>'key', access_token_secret = account.auth->>'secret')
+					twt = twitter.Api(consumer_key = network.auth['key'].astext, consumer_secret = network.auth['secret'].astext, access_token_key = account.auth['key'].astext, access_token_secret = account.auth['secret'].astext)
 					post = db_sqla.query(db_post).filter(db_post.site_id == site.id, db_post.tw_id == None, db_post.publish_date <= now ).order_by(db_post.publish_date.asc()).first()
 					short = bitly.shorten(post.link)
 					text = post.title + ' ' + short['url']

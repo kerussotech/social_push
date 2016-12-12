@@ -13,6 +13,7 @@ class db_account(Base):
 	auth = sa.Column(sa.JSON)
 	frequency = sa.Column(sa.Integer)
 	last = sa.Column(sa.Date)
+	is_active = sa.Column(sa.Integer)
 
 class db_network(Base):
 	__tablename__ = 'network'
